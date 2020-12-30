@@ -15,60 +15,13 @@ existing Java EE workload to Azure, aka:
 ## Table of Contents
 
    * [Migrate Java EE App to Azure](#migrate-java-ee-app-to-azure)
-      * [Table of Contents](#table-of-contents)
       * [What you will migrate to cloud](#what-you-will-migrate-to-cloud)
       * [What you will need](#what-you-will-need)
       * [Getting Started](#getting-started)
-         * [Step ONE - Clone and Prep](#step-one---clone-and-prep)
       * [Build and Deploy Pet Store Powered Using H2](#build-and-deploy-pet-store-powered-using-h2)
-         * [Build Pet Store](#build-pet-store)
-         * [Deploy to WildFly in App Service Linux](#deploy-to-wildfly-in-app-service-linux)
-         * [Open Pet Store running on App Service in App Service Linux](#open-pet-store-running-on-app-service-in-app-service-linux)
       * [Build and Deploy Pet Store Powered Using Azure Database for PostgreSQL](#build-and-deploy-pet-store-powered-using-azure-database-for-postgresql)
-         * [Add PostgreSQL Profile](#add-postgresql-profile)
-         * [Set environment variables for binding secrets at runtime](#set-environment-variables-for-binding-secrets-at-runtime)
-         * [Create and Configure Petstore DB in Azure Database for PostgreSQL](#create-and-configure-petstore-db-in-azure-database-for-postgresql)
-         * [Configure PostgreSQL Data Source](#configure-postgresql-data-source)
-            * [Step 1: Understand How to configure WildFly](#step-1-understand-how-to-configure-wildfly)
-            * [Step 2: Upload data source artifacts to App Service linux](#step-2-upload-data-source-artifacts-to-app-service-linux)
-            * [Step 3: Set PostgreSQL database connection info in the Web app environment](#step-3-set-postgresql-database-connection-info-in-the-web-app-environment)
-            * [Step 4: Test the JBoss/WildFly CLI commands to configure data source](#step-4-test-the-jbosswildfly-cli-commands-to-configure-data-source)
-            * [Step 5: Restart the remote WildFly app server](#step-5-restart-the-remote-wildfly-app-server)
-         * [Build PetStore to interact with Azure Database for PostgreSQL](#build-petstore-to-interact-with-azure-database-for-postgresql)
-         * [Deploy to App Service Linux](#deploy-to-app-service-linux)
-         * [Open Pet Store running on App Service Linux and interacting with Azure Database for PostgreSQL](#open-pet-store-running-on-app-service-linux-and-interacting-with-azure-database-for-postgresql)
-         * [Log into Azure Database for PostgreSQL and Validate Tables were Created and Populated](#log-into-azure-database-for-postgresql-and-validate-tables-were-created-and-populated)
-         * [Trouble Shoot Petstore on Azure by Viewing Logs](#trouble-shoot-petstore-on-azure-by-viewing-logs)
       * [Build and Deploy Pet Store Powered Using Azure Database for MySQL](#build-and-deploy-pet-store-powered-using-azure-database-for-mysql)
-         * [Add MySQL Profile](#add-mysql-profile)
-         * [Set environment variables for binding secrets at runtime](#set-environment-variables-for-binding-secrets-at-runtime-1)
-         * [Create and Configure MySQL DB in Azure Database for MySQL](#create-and-configure-mysql-db-in-azure-database-for-mysql)
-         * [Configure MySQL Data Source](#configure-mysql-data-source)
-            * [Step 1: Understand How to configure WildFly](#step-1-understand-how-to-configure-wildfly-1)
-            * [Step 2: Upload data source artifacts to App Service linux](#step-2-upload-data-source-artifacts-to-app-service-linux-1)
-            * [Step 3: Set MySQL database connection info in the Web app environment](#step-3-set-mysql-database-connection-info-in-the-web-app-environment)
-            * [Step 4: Test the JBoss/WildFly CLI commands to configure data source](#step-4-test-the-jbosswildfly-cli-commands-to-configure-data-source-1)
-            * [Step 5: Restart the remote WildFly app server](#step-5-restart-the-remote-wildfly-app-server-1)
-         * [Build PetStore to interact with Azure Database for MySQL](#build-petstore-to-interact-with-azure-database-for-mysql)
-         * [Deploy to App Service Linux](#deploy-to-app-service-linux-1)
-         * [Open Pet Store running on App Service Linux and interacting with Azure Database for MySQL](#open-pet-store-running-on-app-service-linux-and-interacting-with-azure-database-for-mysql)
-         * [Log into Azure Database for MySQL and Validate Tables were Created and Populated](#log-into-azure-database-for-mysql-and-validate-tables-were-created-and-populated)
-         * [Trouble Shoot Petstore on Azure by Viewing Logs](#trouble-shoot-petstore-on-azure-by-viewing-logs-1)
       * [Build and Deploy Pet Store Powered Using Azure SQL Database](#build-and-deploy-pet-store-powered-using-azure-sql-database)
-         * [Add SQL Database Profile](#add-sql-database-profile)
-         * [Set environment variables for binding secrets at runtime](#set-environment-variables-for-binding-secrets-at-runtime-2)
-         * [Create and Configure SQL DB in Azure SQL Database](#create-and-configure-sql-db-in-azure-sql-database)
-         * [Configure SQL Database Data Source](#configure-sql-database-data-source)
-            * [Step 1: Understand How to configure WildFly](#step-1-understand-how-to-configure-wildfly-2)
-            * [Step 2: Upload data source artifacts to App Service linux](#step-2-upload-data-source-artifacts-to-app-service-linux-2)
-            * [Step 3: Set SQL Database connection info in the Web app environment](#step-3-set-sql-database-connection-info-in-the-web-app-environment)
-            * [Step 4: Test the JBoss/WildFly CLI commands to configure data source](#step-4-test-the-jbosswildfly-cli-commands-to-configure-data-source-2)
-            * [Step 5: Restart the remote WildFly app server](#step-5-restart-the-remote-wildfly-app-server-2)
-         * [Build PetStore to interact with Azure SQL Database](#build-petstore-to-interact-with-azure-sql-database)
-         * [Deploy to App Service Linux](#deploy-to-app-service-linux-2)
-         * [Open Pet Store running on App Service Linux and interacting with Azure SQL Database](#open-pet-store-running-on-app-service-linux-and-interacting-with-azure-sql-database)
-         * [Log into Azure SQL Database and Validate Tables were Created and Populated](#log-into-azure-sql-database-and-validate-tables-were-created-and-populated)
-         * [Trouble Shoot Petstore on Azure by Viewing Logs](#trouble-shoot-petstore-on-azure-by-viewing-logs-2)
       * [Scale out the Pet Store app](#scale-out-the-pet-store-app)
       * [Congratulations!](#congratulations)
       * [Resources](#resources)
@@ -107,6 +60,7 @@ In addition, you will need the following:
 | [Git](https://github.com/) 
 | [PostgreSQL CLI](https://www.postgresql.org/docs/current/app-psql.html)
 | [MySQL CLI](https://dev.mysql.com/downloads/shell/)
+| [SQLCMD CLI](https://cloudblogs.microsoft.com/sqlserver/2017/05/16/sql-server-command-line-tools-for-macos-released/)
 |
 
 ## Getting Started
@@ -166,7 +120,7 @@ bash-3.2$ mvn package -Dmaven.test.skip=true
 
    ```
     
-#### Deploy to WildFly in App Service Linux
+#### Deploy to JBoss EAP in App Service Linux
 
 Login to Azure by using the 'az login' command and follow the instructions that give a device code to be entered in browser
 
@@ -184,40 +138,53 @@ cp set-env-variables-template.sh .scripts/set-env-variables.sh
 ```
 
 Modify `.scripts/set-env-variables.sh` and set Azure Resource Group name, 
-App Service Web App Name, Azure Region and WildFly directory in
+App Service Web App Name, Azure Region and JBoss EAP directory in
  the local machine. Then, set environment variables:
  
 ```bash
 source .scripts/set-env-variables.sh
+
+az account set -s ${SUBSCRIPTION}
 ```
  
 Add [Maven Plugin for Azure App Service](https://github.com/Microsoft/azure-maven-plugins/blob/develop/azure-webapp-maven-plugin/README.md) configuration to POM.xml and deploy
-Pet Store to WildFly in App Service Linux:
+Pet Store to JBoss EAP in App Service Linux:
 
 ```xml    
 <plugins> 
 
-    <!--*************************************************-->
-    <!-- Deploy to WildFly in App Service Linux          -->
-    <!--*************************************************-->
-       
-    <plugin>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-webapp-maven-plugin</artifactId>
-        <version>1.6.0</version>
-        <configuration>
-    
-            <!-- Web App information -->
-            <resourceGroup>${RESOURCEGROUP_NAME}</resourceGroup>
-            <appServicePlanName>${WEBAPP_PLAN_NAME}</appServicePlanName>
-            <appName>${WEBAPP_NAME}</appName>
-            <region>${REGION}</region>
-    
-            <!-- Java Runtime Stack for Web App on Linux-->
-            <linuxRuntime>wildfly 14-jre8</linuxRuntime>
-    
-        </configuration>
-    </plugin>
+  <!--*************************************************-->
+  <!-- Deploy to JBoss EAP in App Service Linux           -->
+  <!--*************************************************-->
+
+  <plugin>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-webapp-maven-plugin</artifactId>
+    <version>1.12.0</version>
+    <configuration>
+      <schemaVersion>v2</schemaVersion>
+      <subscriptionId>${SUBSCRIPTION}</subscriptionId>
+      <resourceGroup>${RESOURCEGROUP_NAME}</resourceGroup>
+      <appName>${WEBAPP_NAME}</appName>
+      <pricingTier>P1v2</pricingTier>
+      <region>${REGION}</region>
+      <runtime>
+        <os>Linux</os>
+        <javaVersion>Java 8</javaVersion>
+        <webContainer>Jbosseap 7.2</webContainer>
+      </runtime>
+      <deployment>
+        <resources>
+          <resource>
+            <directory>${project.basedir}/target</directory>
+            <includes>
+              <include>*.war</include>
+            </includes>
+          </resource>
+        </resources>
+      </deployment>
+    </configuration>
+  </plugin>
     ...
 </plugins>
 ```
@@ -233,7 +200,7 @@ mvn azure-webapp:deploy
 [INFO] Building Petstore application using Java EE 7 7.0
 [INFO] ------------------------------------------------------------------------
 [INFO] 
-[INFO] --- azure-webapp-maven-plugin:1.6.0:deploy (default-cli) @ petstoreee7 ---
+[INFO] --- azure-webapp-maven-plugin:1.12.0:deploy (default-cli) @ petstoreee7 ---
 [INFO] Authenticate with Azure CLI 2.0
 [INFO] Target Web App doesn't exist. Creating a new one...
 [INFO] Creating App Service Plan 'petstore-java-ee-appservice-plan'...
@@ -300,7 +267,7 @@ Add a new profile for PostgreSQL in `pom.xml`:
               <goal>copy</goal>
             </goals>
             <configuration>
-              <sourceFile>${project.basedir}/src/main/resources/META-INF/persistence-postgresql.xml</sourceFile>
+              <sourceFile>${project.basedir}/main/resources/META-INF/persistence-postgresql.xml</sourceFile>
               <destinationFile>${project.basedir}/src/main/resources/META-INF/persistence.xml</destinationFile>
             </configuration>
           </execution>
@@ -328,8 +295,8 @@ Your password can not contain all or part of the username ( 3 or more consecutiv
  Get the FTP details by using the webapp and resource group created in the previous H2-based lab, with the following command, which displays profile values
 
 ```bash
-az webapp deployment list-publishing-profiles -g <resource-group> -n <webapp>
-```
+az webapp deployment list-publishing-profiles -g ${RESOURCEGROUP_NAME} -n ${WEBAPP_NAME}
+
 {
    ...
    ...
@@ -365,7 +332,7 @@ az postgres server create --resource-group ${RESOURCEGROUP_NAME} \
     --location ${REGION} \
     --admin-user ${POSTGRES_SERVER_ADMIN_LOGIN_NAME} \
     --admin-password ${POSTGRES_SERVER_ADMIN_PASSWORD} \
-    --sku-name GP_Gen4_2 --version 9.6
+    --sku-name GP_Gen5_2
 
 az postgres server firewall-rule create \
     --resource-group ${RESOURCEGROUP_NAME} \
@@ -404,6 +371,8 @@ postgres=> \l
 postgres=> \q
 ```
 
+Note - you can install `psql` command line tool using `brew reinstall postgresql`.
+
 When you migrate Java workloads to cloud, you will be considering moving data to cloud. 
 To accelerate your transition to cloud, 
 Azure offers plenty of options to [migrate your data](https://azure.microsoft.com/en-us/services/database-migration/) 
@@ -416,15 +385,15 @@ Also, for your convenience, there is a [cheat sheet for PostgreSQL CLI](http://w
 There are 5 steps to configure a data source. These steps are similar to configuring data sources 
 in any on premise Java EE app servers:
 
-##### Step 1: Understand How to configure WildFly
+##### Step 1: Understand How to configure JBoss EAP
 
 In App Service, each instance of an app server is stateless. Therefore, each instance must be 
-configured on startup to support a Wildfly configuration needed by your application. You can configure at 
+configured on startup to support a JBoss EAP configuration needed by your application. You can configure at 
 startup by supplying a startup Bash script that calls [JBoss/WildFly CLI commands](https://docs.jboss.org/author/display/WFLY/Command+Line+Interface) to setup data sources, messaging 
  providers and any other dependencies. We will create a startup.sh script and place it in the `/home` 
  directory of the Web app. The script will:
  
-Install a WildFly module:
+Install a JBoss EAP module:
 
 ```bash
 # where resources point to JDBC driver for PostgreSQL
@@ -569,17 +538,20 @@ az webapp config appsettings set \
    "value": "postgres@petstore-db"
  }
 ] 
- 
+
+az webapp config set --startup-file /home/startup.sh \
+    --resource-group ${RESOURCEGROUP_NAME} --name ${WEBAPP_NAME}
+
 ```
 
-##### Step 4: Test the JBoss/WildFly CLI commands to configure data source
+##### Step 4: Test the JBoss EAP CLI commands to configure data source
 
 You can test Bash script for configuring data source by running them on App Service Linux 
 by [opening an SSH connection from your development machine](https://docs.microsoft.com/en-us/azure/app-service/containers/app-service-linux-ssh-support#open-ssh-session-from-remote-shell):
 
 ```bash
 # ======== first terminal window =========
-az webapp remote-connection create --resource-group ${RESOURCEGROUP_NAME} --name ${WEBAPP_NAME} &
+az webapp create-remote-connection --resource-group ${RESOURCEGROUP_NAME} --name ${WEBAPP_NAME} &
 [18] 7422
 bash-3.2$ Auto-selecting port: 60029
 SSH is available { username: root, password: Docker! }
@@ -605,19 +577,9 @@ A P P   S E R V I C E   O N   L I N U X
 Documentation: http://aka.ms/webapp-linux
 c315a18b39d2:/home#
 
-#========= open a vi window to edit startup.sh ============
-c315a18b39d2:/home# vi startup.sh
-
-# ======== vi window =====================
-#!/usr/bin/env bash^M
-/opt/jboss/wildfly/bin/jboss-cli.sh -c --file=/home/site/deployments/tools/postgresql-datasource-commands.cli^M
-~
-
-remove those '^M' end of line characters and save the file
-
 # ======== run JBoss/WildFly CLI commands to configure a data source ===========
 
-c315a18b39d2:/home# /opt/jboss/wildfly/bin/jboss-cli.sh --connect
+c315a18b39d2:/home# /opt/eap/bin/jboss-cli.sh --connect
 Picked up _JAVA_OPTIONS: -Djava.net.preferIPv4Stack=true
 
 [standalone@localhost:9990 /] module add --name=org.postgres --resources=/home/site/deployments/tools/postgresql-42.2.5.jar --module-xml=/home/site/deployments/tools/postgresql-module.xml
@@ -630,11 +592,21 @@ Picked up _JAVA_OPTIONS: -Djava.net.preferIPv4Stack=true
     "outcome" => "success",
     "result" => [true]
 }
+
+# ====== run JBoss/WildFly CLI commands to undo data source configuration ========
+
+/subsystem=datasources:read-resource
+/subsystem=datasources:installed-drivers-list
+module remove --name=org.postgres # --name=com.mysql --name=com.microsoft
+data-source remove --name=postgresDS # --name=mysqlDS --name=sqlDS
+reload --use-current-server-config=true
+/subsystem=datasources/jdbc-driver=postgres:remove # jdbc-driver=mysql jdbc-driver-sqlserver
+
 ``` 
 
-##### Step 5: Restart the remote WildFly app server
+##### Step 5: Restart the remote JBoss EAP app server
 
-Use Azure CLI to restart the remote WildFly app server:
+Use Azure CLI to restart the remote JBoss EAP app server:
    
 ```bash
 az webapp stop -g ${RESOURCEGROUP_NAME} -n ${WEBAPP_NAME}
@@ -682,7 +654,7 @@ mvn package -Dmaven.test.skip=true -Ddb=postgresql
 
 #### Deploy to App Service Linux 
 
-Deploy to WildFly in App Service Linux:
+Deploy to JBoss EAP in App Service Linux:
 
 ```bash
 mvn azure-webapp:deploy
@@ -692,7 +664,7 @@ mvn azure-webapp:deploy
 [INFO] Building Petstore application using Java EE 7 7.0
 [INFO] ------------------------------------------------------------------------
 [INFO] 
-[INFO] --- azure-webapp-maven-plugin:1.6.0:deploy (default-cli) @ petstoreee7 ---
+[INFO] --- azure-webapp-maven-plugin:1.12.0:deploy (default-cli) @ petstoreee7 ---
 [INFO] Authenticate with Azure CLI 2.0
 [INFO] Updating target Web App...
 [INFO] Successfully updated Web App.
@@ -773,36 +745,6 @@ Open Java Web app remote log stream from a local machine:
 ```bash
 az webapp log tail --name ${WEBAPP_NAME} \
  --resource-group ${RESOURCEGROUP_NAME}
-
-2018-12-22T00:47:48  Welcome, you are now connected to log-streaming service.
-2018-12-22T00:41:45.064280703Z   _____                               
-2018-12-22T00:41:45.064325203Z   /  _  \ __________ _________   ____  
-2018-12-22T00:41:45.064331403Z  /  /_\  \___   /  |  \_  __ \_/ __ \ 
-2018-12-22T00:41:45.064335603Z /    |    \/    /|  |  /|  | \/\  ___/ 
-2018-12-22T00:41:45.064339403Z \____|__  /_____ \____/ |__|    \___  >
-2018-12-22T00:41:45.064343503Z         \/      \/                  \/ 
-2018-12-22T00:41:45.064347403Z A P P   S E R V I C E   O N   L I N U X  
-...
-...
-2018-12-22T00:41:47.124232726Z ***Copying /home/site/wwwroot/webapps/ROOT to /opt/jboss/wildfly/standalone/deployments/ROOT.war
-2018-12-22T00:41:48.193646648Z ***Creating marker file /opt/jboss/wildfly/standalone/deployments/ROOT.war.dodeploy
-...
-...
-2018-12-22T00:41:52.895075005Z 00:41:52,770 INFO  [org.jboss.modules] (main) JBoss Modules version 1.8.6.Final
-2018-12-22T00:41:55.713960188Z 00:41:55,704 INFO  [org.jboss.msc] (main) JBoss MSC version 1.4.3.Final
-2018-12-22T00:41:55.817008239Z 00:41:55,816 INFO  [org.jboss.threads] (main) JBoss Threads version 2.3.2.Final
-2018-12-22T00:41:57.201980849Z 00:41:57,201 INFO  [org.jboss.as] (MSC service thread 1-2) WFLYSRV0049: WildFly Full 14.0.1.Final (WildFly Core 6.0.2.Final) starting
-...
-...
-2018-12-22T00:42:19.043814396Z 00:42:19,043 INFO  [org.jboss.as.connector.subsystems.datasources] (ServerService Thread Pool -- 41) WFLYJCA0005: Deploying non-JDBC-compliant driver class org.postgresql.Driver (version 42.2)
-2018-12-22T00:42:19.050046930Z 00:42:19,042 INFO  [org.jboss.as.security] (MSC service thread 1-2) WFLYSEC0001: Current PicketBox version=5.0.3.Final
-2018-12-22T00:42:19.086580525Z 00:42:19,086 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-1) WFLYUT0003: Undertow 2.0.13.Final starting
-2018-12-22T00:42:19.155234792Z 00:42:19,155 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-2) WFLYJCA0018: Started Driver service with driver-name = h2
-2018-12-22T00:42:19.173958592Z 00:42:19,173 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-2) WFLYJCA0018: Started Driver service with driver-name = postgres
-...
-...
-2018-12-22T00:42:40.634081365Z 00:42:40,633 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: WildFly Full 14.0.1.Final (WildFly Core 6.0.2.Final) started in 22695ms - Started 801 of 972 services (328 services are lazy, passive or on-demand)
-
 ```
 
 When you are finished, you can check your results 
@@ -847,7 +789,7 @@ Add a new profile for MySQL in `pom.xml`:
               <goal>copy</goal>
             </goals>
             <configuration>
-              <sourceFile>${project.basedir}/src/main/resources/META-INF/persistence-mysql.xml</sourceFile>
+              <sourceFile>${project.basedir}/main/resources/META-INF/persistence-mysql.xml</sourceFile>
               <destinationFile>${project.basedir}/src/main/resources/META-INF/persistence.xml</destinationFile>
             </configuration>
           </execution>
@@ -866,7 +808,7 @@ cp set-env-variables-template.sh .scripts/set-env-variables.sh
 ```
 
 Modify `.scripts/set-env-variables.sh` and set Azure Resource Group name, 
-App Service Web App Name, Azure Region, WildFly directory in
+App Service Web App Name, Azure Region, JBoss EAP directory in
  the local machine, FTP deployment credentials and MySQL server info. 
  Then, set environment variables:
  
@@ -928,8 +870,19 @@ Query OK, 0 rows affected (0.04 sec)
 mysql> GRANT ALL PRIVILEGES ON petstore.* TO 'root';
 Query OK, 0 rows affected (0.05 sec)
 
+mysql> CALL mysql.az_load_timezone();
+Query OK, 3179 rows affected, 1 warning (6.34 sec)
+    
+mysql> SELECT name FROM mysql.time_zone_name;
+...
+
 mysql> quit
 Bye
+
+az mysql server configuration set --name time_zone \
+     --resource-group ${RESOURCEGROUP_NAME} \
+     --server ${MYSQL_SERVER_NAME} --value "US/Pacific"
+
 ```
 
 When you migrate Java workloads to cloud, you will be considering moving data to cloud. 
@@ -944,15 +897,15 @@ Also, for your convenience, there is a [cheat sheet for MySQL CLI](http://www.my
 There are 5 steps to configure a data source. These steps are similar to configuring data sources 
 in any on premise Java EE app servers:
 
-##### Step 1: Understand How to configure WildFly
+##### Step 1: Understand How to configure JBoss EAP
 
 In App Service, each instance of an app server is stateless. Therefore, each instance must be 
-configured on startup to support a Wildfly configuration needed by your application. You can configure at 
+configured on startup to support a JBoss EAP configuration needed by your application. You can configure at 
 startup by supplying a startup Bash script that calls [JBoss/WildFly CLI commands](https://docs.jboss.org/author/display/WFLY/Command+Line+Interface) to setup data sources, messaging 
  providers and any other dependencies. We will create a startup.sh script and place it in the `/home` 
  directory of the Web app. The script will:
  
-Install a WildFly module:
+Install a JBoss EAP module:
 
 ```bash
 # where resources point to JDBC driver for MySQL
@@ -1105,7 +1058,7 @@ by [opening an SSH connection from your development machine](https://docs.micros
 
 ```bash
 # ======== first terminal window =========
-az webapp remote-connection create --resource-group ${RESOURCEGROUP_NAME} --name ${WEBAPP_NAME} &
+az webapp create-remote-connection --resource-group ${RESOURCEGROUP_NAME} --name ${WEBAPP_NAME} &
 [18] 7422
 bash-3.2$ Auto-selecting port: 60029
 SSH is available { username: root, password: Docker! }
@@ -1131,21 +1084,9 @@ A P P   S E R V I C E   O N   L I N U X
 Documentation: http://aka.ms/webapp-linux
 c315a18b39d2:/home#
 
-#========= open a vi window to edit startup.sh ============
-c315a18b39d2:/home# vi startup.sh
-
-# ======= vi window second time ==========
-#!/usr/bin/env bash^M
-/opt/jboss/wildfly/bin/jboss-cli.sh -c --file=/home/site/deployments/tools/postgresql-datasource-commands.cli^M
-/opt/jboss/wildfly/bin/jboss-cli.sh -c --file=/home/site/deployments/tools/mysql-datasource-commands.cli^M
-~
-
-
-remove those '^M' end of line characters and save the file
-
 # ======== run JBoss/WildFly CLI commands to configure a data source ===========
 
-c315a18b39d2:/home# /opt/jboss/wildfly/bin/jboss-cli.sh --connect
+c315a18b39d2:/home# /opt/eap/bin/jboss-cli.sh -c
 Picked up _JAVA_OPTIONS: -Djava.net.preferIPv4Stack=true
 
 [standalone@localhost:9990 /] module add --name=com.mysql --resources=/home/site/deployments/tools/mysql-connector-java-8.0.13.jar --module-xml=/home/site/deployments/tools/mysql-module.xml
@@ -1158,11 +1099,21 @@ Picked up _JAVA_OPTIONS: -Djava.net.preferIPv4Stack=true
     "outcome" => "success",
     "result" => [true]
 }
+
+# ======== run JBoss/WildFly CLI commands to undo the datasource configuration =========
+
+/subsystem=datasources:read-resource
+/subsystem=datasources:installed-drivers-list
+module remove --name=com.mysql # --name=org.postgres --name=com.microsoft
+data-source remove --name=mysqlDS # --name=postgresDS --name=sqlDS
+reload --use-current-server-config=true
+/subsystem=datasources/jdbc-driver=mysql:remove # jdbc-driver=postgres jdbc-driver-sqlserver
+
 ``` 
 
-##### Step 5: Restart the remote WildFly app server
+##### Step 5: Restart the remote JBoss EAP app server
 
-Use Azure CLI to restart the remote WildFly app server:
+Use Azure CLI to restart the remote JBoss EAP app server:
    
 ```bash
 az webapp stop -g ${RESOURCEGROUP_NAME} -n ${WEBAPP_NAME}
@@ -1210,7 +1161,7 @@ bash-3.2$ mvn package -Dmaven.test.skip=true -Ddb=mysql
 
 #### Deploy to App Service Linux 
 
-Deploy to WildFly in App Service Linux:
+Deploy to JBoss EAP in App Service Linux:
 
 ```bash
 mvn azure-webapp:deploy
@@ -1220,7 +1171,7 @@ mvn azure-webapp:deploy
 [INFO] Building Petstore application using Java EE 7 7.0
 [INFO] ------------------------------------------------------------------------
 [INFO]
-[INFO] --- azure-webapp-maven-plugin:1.6.0:deploy (default-cli) @ petstoreee7 ---
+[INFO] --- azure-webapp-maven-plugin:1.12.0:deploy (default-cli) @ petstoreee7 ---
 [INFO] Authenticate with Azure CLI 2.0
 [INFO] Updating target Web App...
 [INFO] Successfully updated Web App.
@@ -1305,37 +1256,6 @@ Open Java Web app remote log stream from a local machine:
 ```bash
 az webapp log tail --name ${WEBAPP_NAME} \
  --resource-group ${RESOURCEGROUP_NAME}
-
-2018-12-22T00:47:48  Welcome, you are now connected to log-streaming service.
-2018-12-22T00:41:45.064280703Z   _____                               
-2018-12-22T00:41:45.064325203Z   /  _  \ __________ _________   ____  
-2018-12-22T00:41:45.064331403Z  /  /_\  \___   /  |  \_  __ \_/ __ \ 
-2018-12-22T00:41:45.064335603Z /    |    \/    /|  |  /|  | \/\  ___/ 
-2018-12-22T00:41:45.064339403Z \____|__  /_____ \____/ |__|    \___  >
-2018-12-22T00:41:45.064343503Z         \/      \/                  \/ 
-2018-12-22T00:41:45.064347403Z A P P   S E R V I C E   O N   L I N U X  
-...
-...
-2018-12-22T00:41:47.124232726Z ***Copying /home/site/wwwroot/webapps/ROOT to /opt/jboss/wildfly/standalone/deployments/ROOT.war
-2018-12-22T00:41:48.193646648Z ***Creating marker file /opt/jboss/wildfly/standalone/deployments/ROOT.war.dodeploy
-...
-...
-2018-12-22T00:41:52.895075005Z 00:41:52,770 INFO  [org.jboss.modules] (main) JBoss Modules version 1.8.6.Final
-2018-12-22T00:41:55.713960188Z 00:41:55,704 INFO  [org.jboss.msc] (main) JBoss MSC version 1.4.3.Final
-2018-12-22T00:41:55.817008239Z 00:41:55,816 INFO  [org.jboss.threads] (main) JBoss Threads version 2.3.2.Final
-2018-12-22T00:41:57.201980849Z 00:41:57,201 INFO  [org.jboss.as] (MSC service thread 1-2) WFLYSRV0049: WildFly Full 14.0.1.Final (WildFly Core 6.0.2.Final) starting
-...
-...
-2018-12-22T00:42:19.043814396Z 00:42:19,043 INFO  [org.jboss.as.connector.subsystems.datasources] (ServerService Thread Pool -- 41) WFLYJCA0005: Deploying non-JDBC-compliant driver class com.mysql.cj.jdbc.Driver (version 8.0)
-2018-12-22T00:42:19.050046930Z 00:42:19,042 INFO  [org.jboss.as.security] (MSC service thread 1-2) WFLYSEC0001: Current PicketBox version=5.0.3.Final
-2018-12-22T00:42:19.086580525Z 00:42:19,086 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-1) WFLYUT0003: Undertow 2.0.13.Final starting
-2018-12-22T00:42:19.155234792Z 00:42:19,155 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-2) WFLYJCA0018: Started Driver service with driver-name = h2
-2018-12-22T00:42:19.173958592Z 00:42:19,173 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-2) WFLYJCA0018: Started Driver service with driver-name = mysql
-2018-12-22T00:42:19.173958592Z 00:42:19,187 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-1) WFLYJCA0018: Started Driver service with driver-name = postgres
-...
-...
-2018-12-22T00:42:40.634081365Z 00:42:40,633 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: WildFly Full 14.0.1.Final (WildFly Core 6.0.2.Final) started in 22695ms - Started 801 of 972 services (328 services are lazy, passive or on-demand)
-
 ```
 
 ## Build and Deploy Pet Store Powered Using Azure SQL Database
@@ -1376,7 +1296,7 @@ Add a new profile for sql in `pom.xml`:
               <goal>copy</goal>
             </goals>
             <configuration>
-              <sourceFile>${project.basedir}/src/main/resources/META-INF/persistence-sql.xml</sourceFile>
+              <sourceFile>${project.basedir}main/resources/META-INF/persistence-sql.xml</sourceFile>
               <destinationFile>${project.basedir}/src/main/resources/META-INF/persistence.xml</destinationFile>
             </configuration>
           </execution>
@@ -1394,7 +1314,7 @@ cp set-env-variables-template.sh .scripts/set-env-variables.sh
 ```
 
 Modify `.scripts/set-env-variables.sh` and set Azure Resource Group name, 
-App Service Web App Name, Azure Region, WildFly directory in
+App Service Web App Name, Azure Region, JBoss EAP directory in
  the local machine, FTP deployment credentials and SQL Database info. 
  Then, set environment variables:
  
@@ -1409,26 +1329,27 @@ Install the Azure CLI `db-up` extension:
 az extension add --name db-up
 ```
 
-Create a Petstore DB using Azure CLI and sql CLI:
+Create a Petstore DB using Azure CLI and SQL CLI:
 ```bash
-az sql up --resource-group ${RESOURCEGROUP_NAME} \
- --server-name ${SQL_SERVER_NAME} \
- --database-name ${SQL_DATABASE_NAME} --admin-user ${SQL_SERVER_ADMIN_LOGIN_NAME} \
- --admin-password ${SQL_SERVER_ADMIN_PASSWORD} \
- --location ${REGION}
 
-Creating SQL Server 'petstore-sql-0601' in group 'e2e-java-ee'...
-Configuring server firewall rule, 'azure-access', to accept connections from all Azure resources...
-Creating SQL database 'sqldb'...
-Checking your ip address...
-Configuring server firewall rule, 'devbox', to allow for your ip address: 98.225.36.126
-If SQL server declines your IP address, please create a new firewall rule using:
-    `az sql server firewall-rule create -g e2e-java-ee -s petstore-sql-0601 -n {rule_name} --start-ip-address {ip_address} --end-ip-address {ip_address}`
-Successfully Connected to SQL Database.
-Ran Database Query: `CREATE USER root WITH PASSWORD = "======= MASKED ======="
-Ran Database Query: `GRANT ALL TO root`
-...
-...
+az sql server create --admin-user ${SQL_SERVER_ADMIN_LOGIN_NAME} \
+     --admin-password ${SQL_SERVER_ADMIN_PASSWORD} \
+     --name ${SQL_SERVER_NAME} \
+     --resource-group ${RESOURCEGROUP_NAME}
+     
+az sql server firewall-rule create --server ${SQL_SERVER_NAME} \
+ --name allAzureIPs \
+ --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0 \
+ --resource-group ${RESOURCEGROUP_NAME}
+
+az sql server firewall-rule create --server ${SQL_SERVER_NAME} \
+ --name myDevBox \
+ --start-ip-address ${DEVBOX_IP_ADDRESS} --end-ip-address ${DEVBOX_IP_ADDRESS} \
+ --resource-group ${RESOURCEGROUP_NAME}
+
+az sql db create --name ${SQL_DATABASE_NAME} \
+    --server ${SQL_SERVER_NAME} \
+    --resource-group ${RESOURCEGROUP_NAME}
 
 ```
 
@@ -1444,15 +1365,15 @@ Also, for your convenience, there is a [cheat sheet for sqlcmd CLI](https://docs
 There are 5 steps to configure a data source. These steps are similar to configuring data sources 
 in any on premise Java EE app servers:
 
-##### Step 1: Understand How to configure WildFly
+##### Step 1: Understand How to configure JBoss EAP
 
 In App Service, each instance of an app server is stateless. Therefore, each instance must be 
-configured on startup to support a Wildfly configuration needed by your application. You can configure at 
+configured on startup to support a JBoss EAP configuration needed by your application. You can configure at 
 startup by supplying a startup Bash script that calls [JBoss/WildFly CLI commands](https://docs.jboss.org/author/display/WFLY/Command+Line+Interface) to setup data sources, messaging 
  providers and any other dependencies. We will create a startup.sh script and place it in the `/home` 
  directory of the Web app. The script will:
  
-Install a WildFly module:
+Install a JBoss EAP module:
 
 ```bash
 # where resources point to JDBC driver for SQL Database
@@ -1591,7 +1512,7 @@ by [opening an SSH connection from your development machine](https://docs.micros
 
 ```bash
 # ======== first terminal window =========
-az webapp remote-connection create --resource-group ${RESOURCEGROUP_NAME} --name ${WEBAPP_NAME} &
+az webapp create-remote-connection --resource-group ${RESOURCEGROUP_NAME} --name ${WEBAPP_NAME} &
 [1] 10851
 bash-3.2$ Auto-selecting port: 54155
 SSH is available { username: root, password: Docker! }
@@ -1625,7 +1546,7 @@ Picked up _JAVA_OPTIONS: -Djava.net.preferIPv4Stack=true
 "Installing MSSQL driver"
 "Installing MSSQL datasource"
 The batch executed successfully
-ee72972be508:/home# /opt/jboss/wildfly/bin/jboss-cli.sh -c
+ee72972be508:/home# /opt/eap/bin/jboss-cli.sh -c
 Picked up _JAVA_OPTIONS: -Djava.net.preferIPv4Stack=true
 
 [standalone@localhost:9990 /] /subsystem=datasources/data-source=sqlDS:test-connection-in-pool()
@@ -1637,9 +1558,9 @@ Picked up _JAVA_OPTIONS: -Djava.net.preferIPv4Stack=true
 [standalone@localhost:9990 /] exit
 ``` 
 
-##### Step 5: Restart the remote WildFly app server
+##### Step 5: Restart the remote JBoss EAP app server
 
-Use Azure CLI to restart the remote WildFly app server:
+Use Azure CLI to restart the remote JBoss EAP app server:
    
 ```bash
 az webapp stop -g ${RESOURCEGROUP_NAME} -n ${WEBAPP_NAME}
@@ -1704,7 +1625,7 @@ mvn package -Dmaven.test.skip=true -Ddb=sql
 
 #### Deploy to App Service Linux 
 
-Deploy to WildFly in App Service Linux:
+Deploy to JBoss EAP in App Service Linux:
 
 ```bash
 mvn azure-webapp:deploy
@@ -1714,7 +1635,7 @@ mvn azure-webapp:deploy
 [INFO] Building Petstore application using Java EE 7 7.0
 [INFO] ------------------------------------------------------------------------
 [INFO] 
-[INFO] --- azure-webapp-maven-plugin:1.6.0:deploy (default-cli) @ petstoreee7 ---
+[INFO] --- azure-webapp-maven-plugin:1.12.0:deploy (default-cli) @ petstoreee7 ---
 [INFO] Authenticate with Azure CLI 2.0
 [INFO] Updating target Web App...
 [INFO] Successfully updated Web App.
@@ -1868,3 +1789,24 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) 
 with any additional 
 questions or comments.
+
+---
+
+Here are some useful JBoss CLI commands:
+
+```bash
+/opt/eap/bin/jboss-cli.sh -c
+
+/subsystem=datasources:read-resource
+
+/subsystem=datasources:installed-drivers-list
+
+module remove --name=org.postgres # --name=com.mysql --name=com.microsoft
+
+data-source remove --name=postgresDS # --name=mysqlDS --name=sqlDS
+
+reload --use-current-server-config=true
+
+/subsystem=datasources/jdbc-driver=postgres:remove # jdbc-driver=mysql jdbc-driver-sqlserver
+
+```
