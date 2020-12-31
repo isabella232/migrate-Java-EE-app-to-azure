@@ -4,6 +4,11 @@ platforms: java
 author: selvasingh, sadigopu
 ---
 
+We are archiving this repo in favor of an updated training module - 
+[migrate-javaee-app-to-azure-training](https://github.com/Azure-Samples/migrate-javaee-app-to-azure-training)
+
+---
+
 # Migrate Java EE App to Azure
 
 This guide walks you through the process of migrating an 
